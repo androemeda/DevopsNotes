@@ -1,0 +1,29 @@
+decompose monolithic application such that independant applications can talk using APIs 
+
+2 types of load-balancing - path based routing
+                            identifying one instance in the microservice
+
+authentication - are u a valid user
+authorization - u r valid , but are u allowed to do this
+
+2 microservices should not talk to a single db
+
+3 axes of scalability - book
+
+ms to ms calls need load-balancer in between
+
+all lb should be able to do service discovery , ie , they should be able to know when a new instance comes or an existing instance goes down
+
+ms can talk to each other using - synchronous calls
+                                  asynchronous calls
+
+2 types of async communications : publisher-subscriber model and queue model. in both these models , we dont need a load-balancer 
+
+broker is a kind of tool , example kafka 
+
+in ms ,  we will always externalize the logs. splunk, dynatrace , datadog etc 
+
+the 12 factor app 
+
+ms should be stateless so that we can scale them
+
