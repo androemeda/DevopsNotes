@@ -1,0 +1,39 @@
+AWS machine = EC2 instance → comes from a particular region.
+Indian regions: Mumbai and Hyderabad.
+
+Mumbai region has multiple data center buildings spread out — earlier 60–70 km apart, now some closer.
+If one building faces an issue like an earthquake, the others stay unaffected.
+Each building (availability zone) has its own independent infrastructure — this also helps protect against things like virus attacks.
+
+When you create an AWS account, a default VPC (Virtual Private Cloud) is automatically set up.
+It’s basically your own private network inside AWS — a software-defined network.
+
+Subnets are smaller networks within that VPC, each usually located in one data center building.
+You don’t have to use every building/zone — in production setups, you might use 5 out of 6 for example.
+
+If you create 2 subnets (say s1 and s2) in two different buildings, both stay under the same VPC.
+By default, s1 and s2 can communicate with each other.
+
+Internet Gateway (IGW) — connect this to a subnet to allow internet access.
+A subnet connected to an IGW is called a public subnet.
+
+A private subnet is one that’s not connected to the IGW.
+You might place a load balancer in a public subnet, and have it forward traffic to the services in private subnets — this acts as a basic layer of security.
+
+So there are security layers at different levels — VPC, subnet, and machine.
+
+Load balancers are placed in public subnets; they distribute traffic to private subnets behind them.
+
+Summary:
+An AWS EC2 instance lives inside a
+Subnet → inside a VPC → inside a Region → inside one Availability Zone (AZ).
+Internet Gateway connects public subnets to the internet.
+Load balancers are in public subnets, sending traffic to private subnets for added security.
+
+Zero Downtime Upgrade: Deploy a new version without interrupting user access.
+
+AWS SLAs — define service guarantees.
+
+DevOps: A mix of practices, tools, and mindsets to release software faster and more reliably.
+
+Shift Left approach: Detect bugs earlier in the process — even include security and performance testing earlier rather than only at the end.
