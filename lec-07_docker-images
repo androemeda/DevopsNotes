@@ -1,0 +1,106 @@
+Docker recap:
+- Docker helps package app + deps into containers
+- image = packaged environment
+- container = running instance of image
+- containers are lightweight because they use host OS kernel
+
+Images vs Containers:
+- image → read-only blueprint
+- container → image + thin writable layer
+- every container always comes from an image
+- multiple containers can be created from same image
+
+Dockerfile:
+- plain text file with instructions to build an image
+- Docker reads instructions top to bottom
+- every instruction creates a new layer
+
+FROM:
+- defines base image
+- mandatory in every Dockerfile
+- base image provides OS + tools
+- best practice → use minimal images (slim, alpine)
+- avoid `latest`, pin versions
+
+Building images:
+- `docker build -t imagename .`
+- `-t` → tag (image name)
+- image names must be lowercase
+- last `.` → build context
+- images stored internally at `/var/lib/docker`
+
+How Docker builds image:
+- reads Dockerfile
+- pulls base image (if not cached)
+- executes instructions one by one
+- creates layers for each instruction
+- merges layers into final image
+
+Build time vs Run time:
+- build phase → FROM, RUN, COPY, ADD, ENV, WORKDIR
+- run phase → CMD, ENTRYPOINT
+- important to know what runs when
+
+RUN:
+- executes commands at build time
+- used for installing packages, setup
+- each RUN creates a new layer
+- best practice → combine commands using `&&`
+- clean cache to reduce image size
+
+CMD:
+- default command when container starts
+- only last CMD is considered
+- can be overridden at runtime
+- example: `docker run image ls` overrides CMD
+
+ENTRYPOINT:
+- main executable of container
+- not easily overridden
+- container always runs ENTRYPOINT
+
+ENTRYPOINT + CMD:
+- ENTRYPOINT → command
+- CMD → default arguments
+- CMD can be overridden, ENTRYPOINT stays
+
+COPY vs ADD:
+- COPY → simple, predictable file copy
+- ADD → extra features (URL download, tar extract)
+- best practice → use COPY unless ADD is needed
+
+Multi-stage builds:
+- use multiple FROM instructions
+- build app in one stage (e.g. JDK)
+- run app in final stage (e.g. JRE)
+- reduces image size significantly
+
+Copy-on-write (CoW):
+- image layers are read-only
+- container writes go to writable layer
+- improves performance and storage efficiency
+
+Performance optimizations:
+- reduce number of layers
+- choose small base images
+- use JRE instead of JDK in production
+- install deps before copying full code for caching
+
+Useful commands:
+- `docker images`
+- `docker history <image>`
+- `docker inspect <image>`
+- `docker scan <image>`
+- `docker rmi <image-id>`
+
+Example Dockerfile idea:
+- lightweight base image
+- install deps early
+- ENTRYPOINT defines main command
+- CMD provides default args
+
+Key takeaway:
+- Dockerfile defines how image is built
+- docker build → creates image
+- docker run → creates + runs container
+- ENTRYPOINT vs CMD distinction is critical
